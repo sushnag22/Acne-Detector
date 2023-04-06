@@ -101,20 +101,20 @@ def upload_right_cheek():
     totalScore = 0
     ftemp, ltemp, rtemp = 0, 0, 0
     for pred_class, count in ffCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: ftemp = 8
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: ftemp = 4
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: ftemp = 6
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: ftemp = 2
+        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: ftemp += 8
+        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: ftemp += 4
+        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: ftemp += 6
+        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: ftemp += 2
     for pred_class, count in lcCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: ltemp = 8
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: ltemp = 4
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: ltemp = 6
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: ltemp = 2
+        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: ltemp += 8
+        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: ltemp += 4
+        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: ltemp += 6
+        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: ltemp += 2
     for pred_class, count in rcCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: rtemp = 8
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: rtemp = 4
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: rtemp = 6
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: rtemp = 2
+        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: rtemp += 8
+        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: rtemp += 4
+        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: rtemp += 6
+        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: rtemp += 2
     
     totalScore = ftemp+ltemp+rtemp
     if totalScore >= 1 and totalScore <= 18:
