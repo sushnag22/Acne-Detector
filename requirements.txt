@@ -29,3 +29,4 @@ tqdm==4.65.0
 urllib3==1.26.15
 Werkzeug==2.2.3
 wget==3.2
+gunicorn==20.0.04
