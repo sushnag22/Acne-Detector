@@ -27,7 +27,7 @@ def upload_front_face():
     global resultInJsonFf
     resultInJsonFf = model.predict('static/images/upload_front_face.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
-    model.predict('static/images/upload_front_face.jpg', confidence=confidence, overlap=overlap) //.save('static/images/result_of_upload_front_face.jpg')
+    model.predict('static/images/upload_front_face.jpg', confidence=confidence, overlap=overlap) #.save('static/images/result_of_upload_front_face.jpg')
     # parsed json data
     parsed_data = resultInJsonFf
     global ffCount
@@ -55,7 +55,7 @@ def upload_left_cheek():
     global resultInJsonLc
     resultInJsonLc = model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
-    model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap) //.save('static/images/result_of_upload_left_cheek.jpg')
+    model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap) #.save('static/images/result_of_upload_left_cheek.jpg')
     parsed_data = resultInJsonLc
     global lcCount
     # loop through each object in the "predictions" list
@@ -82,7 +82,7 @@ def upload_right_cheek():
     global resultInJsonRc
     resultInJsonRc = model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
-    model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap) //.save('static/images/result_of_upload_right_cheek.jpg')
+    model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap) #.save('static/images/result_of_upload_right_cheek.jpg')
     parsed_data = resultInJsonRc
     global rcCount
     # loop through each object in the "predictions" list
