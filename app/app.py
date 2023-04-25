@@ -2,14 +2,15 @@ from flask import Flask, render_template, url_for, request
 import io, json
 from PIL import Image
 from roboflow import Roboflow
-rf = Roboflow(api_key="490txGCcR4mjEOmyVx97")
-project = rf.workspace().project("acne-detection-v2")
-model = project.version(1).model
+rf = Roboflow(api_key="9iOmZfcCjRidYSY5l0YA")
+project = rf.workspace().project("acne-vulgaris-trial-1")
+model = project.version(3).model
 
 app = Flask(__name__)
 
 # confidence and overlap
-confidence = 20
+max_size = (416, 416)
+confidence = 10
 overlap = 30
 resultInJsonFf = None
 resultInJsonLc = None
@@ -22,12 +23,13 @@ def upload_front_face():
     image_file = request.files['image']
     image_data = image_file.read()
     image = Image.open(io.BytesIO(image_data))
+    image.thumbnail(max_size)
     image.save('static/images/upload_front_face.jpg')
     # infer on a local image
     global resultInJsonFf
     resultInJsonFf = model.predict('static/images/upload_front_face.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
-    model.predict('static/images/upload_front_face.jpg', confidence=confidence, overlap=overlap) #.save('static/images/result_of_upload_front_face.jpg')
+    model.predict('static/images/upload_front_face.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_front_face.jpg')
     # parsed json data
     parsed_data = resultInJsonFf
     global ffCount
@@ -50,12 +52,13 @@ def upload_left_cheek():
     image_file = request.files['image']
     image_data = image_file.read()
     image = Image.open(io.BytesIO(image_data))
+    image.thumbnail(max_size)
     image.save('static/images/upload_left_cheek.jpg')
     # infer on a local image
     global resultInJsonLc
     resultInJsonLc = model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
-    model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap) #.save('static/images/result_of_upload_left_cheek.jpg')
+    model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_left_cheek.jpg')
     parsed_data = resultInJsonLc
     global lcCount
     # loop through each object in the "predictions" list
@@ -77,12 +80,13 @@ def upload_right_cheek():
     image_file = request.files['image']
     image_data = image_file.read()
     image = Image.open(io.BytesIO(image_data))
+    image.thumbnail(max_size)
     image.save('static/images/upload_right_cheek.jpg')
     # infer on a local image
     global resultInJsonRc
     resultInJsonRc = model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
-    model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap) #.save('static/images/result_of_upload_right_cheek.jpg')
+    model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_right_cheek.jpg')
     parsed_data = resultInJsonRc
     global rcCount
     # loop through each object in the "predictions" list
@@ -160,4 +164,4 @@ def instructions():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=8000)
