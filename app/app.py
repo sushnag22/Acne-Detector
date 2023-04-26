@@ -2,15 +2,15 @@ from flask import Flask, render_template, url_for, request
 import io, json
 from PIL import Image
 from roboflow import Roboflow
-rf = Roboflow(api_key="9iOmZfcCjRidYSY5l0YA")
-project = rf.workspace().project("acne-vulgaris-trial-1")
-model = project.version(3).model
+rf = Roboflow(api_key="490txGCcR4mjEOmyVx97")
+project = rf.workspace().project("acne-detection-v2")
+model = project.version(1).model
 
 app = Flask(__name__)
 
 # confidence and overlap
 max_size = (416, 416)
-confidence = 10
+confidence = 20
 overlap = 30
 resultInJsonFf = None
 resultInJsonLc = None
@@ -105,20 +105,54 @@ def upload_right_cheek():
     totalScore = 0
     ftemp, ltemp, rtemp = 0, 0, 0
     for pred_class, count in ffCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: ftemp += 8
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: ftemp += 4
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: ftemp += 6
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: ftemp += 2
+        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+            if count >= 10:
+                ftemp += 8 + 4 + 4
+            else: ftemp += 8 + 4
+            break
+        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+            if count >= 10:
+                ftemp += 6 + 3 + 3
+            else: ftemp += 6 + 3
+            break
+        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+            if count >= 10:
+                ftemp += 4 + 2 + 2
+            else: ftemp += 4 + 2
+            break
+        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+            if count >= 10:
+                ftemp += 2 + 1 + 1
+            else: ftemp += 2 + 1
+            break
+        
     for pred_class, count in lcCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: ltemp += 8
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: ltemp += 4
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: ltemp += 6
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: ltemp += 2
+        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+            ltemp += 8
+            break
+        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+            ltemp += 6
+            break
+        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+            ltemp += 4
+            break
+        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+            ltemp += 2
+            break
+
     for pred_class, count in rcCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1: rtemp += 8
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1: rtemp += 4
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1: rtemp += 6
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1: rtemp += 2
+        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+            rtemp += 8
+            break
+        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+            rtemp += 6
+            break
+        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+            rtemp += 4
+            break
+        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+            rtemp += 2
+            break
     
     totalScore = ftemp+ltemp+rtemp
     if totalScore >= 1 and totalScore <= 18:
@@ -164,4 +198,4 @@ def instructions():
 
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run()
