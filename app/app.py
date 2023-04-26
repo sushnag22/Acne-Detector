@@ -18,6 +18,66 @@ resultInJsonRc = None
 ffCount, lcCount, rcCount = {}, {}, {}
 res = 'None'
 
+def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc, ln, lpu, lpa, lc, rn, rpu, rpa, rc):
+    from fpdf import FPDF
+
+    # Define the PDF document
+    pdf = FPDF(format='A4')
+
+    # Add a page
+    pdf.add_page()
+
+    pdf.set_font('Arial', 'B', 16)
+
+    pdf.set_fill_color(255, 255, 255)
+    pdf.set_text_color(255, 0, 0)
+    pdf.cell(0, 10, str('Acne Severity Analysis Report') , 0, 1, 'C')
+
+    pdf.set_text_color(0, 0, 0)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(10,10, str('Date:'), ln=1)
+    pdf.cell(10,10, str('Patient Name:'), ln=1)
+    pdf.cell(10,10, str('Gender:                        Age:'), ln=1)
+    pdf.ln()
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(0, 10, str('Result: ' + res) , 0, 1, 'C')
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(0, 10, str('Global Score: {}'.format(totalScore)), 0, 1, 'C')
+
+    pdf.set_text_color(0,0,0)
+    pdf.set_font('Arial', 'B', 14)
+    pdf.cell(10, 10, str('Face Region'), ln=1)
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(10, 10, str('      Frontal Face'), ln=1)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(10, 10, str('              nodule {0}, pustule {1}, papule {2}, comedone {3}'.format(fn, fpu, fpa,fc)), ln=1)
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(10, 10, str('              Local Score: {}'.format(ftemp)), ln=1)
+
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(10, 10, str('      Left Cheek'), ln=1)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(10, 10, str('              nodule {0}, pustule {1}, papule {2}, comedone {3}'.format(ln, lpu, lpa, lc)), ln=1)
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(10, 10, str('              Local Score: {}'.format(ltemp)), ln=1)
+
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(10, 10, str('      Right Cheek'), ln=1)
+    pdf.set_font('Arial', '', 12)
+    pdf.cell(10, 10, str('              nodule {0}, pustule {1}, papule {2}, comedone {3}'.format(rn, rpu, rpa, rc)), ln=1)
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(10, 10, str('              Local Score: {}'.format(rtemp)), ln=1)
+
+
+    pdf.image('static/images/result_of_upload_front_face.jpg', x=15, y=200,w=50)
+    pdf.image('static/images/result_of_upload_left_cheek.jpg', x=75, y=200,w=50)
+    pdf.image('static/images/result_of_upload_right_cheek.jpg', x=135, y=200,w=50)
+
+
+    # Save the PDF document
+    pdf.output('acne_report.pdf', 'F')
+
+
 @app.route('/upload_front_face', methods=['POST'])
 def upload_front_face():
     image_file = request.files['image']
@@ -183,6 +243,7 @@ def upload_right_cheek():
         if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2'): rpu = count;
         if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3'): rc = count;
 
+    generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc, ln, lpu, lpa, lc, rn, rpu, rpa, rc)
     css_file = url_for('static', filename='css/style.css')
     return render_template('result.html', css_file=css_file, res = res, globalScore=totalScore, lsff=ftemp, lslc=ltemp, lsrc=rtemp, fn=fn, fpu=fpu, fpa=fpa, fc=fc, ln=ln, lpu=lpu, lpa=lpa, lc=lc, rn=rn, rpu=rpu, rpa=rpa, rc=rc)
 
@@ -195,6 +256,11 @@ def index():
 def instructions():
     css_file = url_for('static', filename='css/style.css')
     return render_template('instructions.html', css_file=css_file)
+
+@app.route('/download')
+def download():
+    filename = 'acne_report.pdf'
+    return send_file(filename, as_attachment=True)
 
 
 if __name__ == '__main__':
