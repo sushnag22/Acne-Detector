@@ -37,7 +37,6 @@ SQLAlchemy==2.0.5.post1
 tqdm==4.65.0
 typing_extensions==4.5.0
 urllib3==1.26.15
-vboxapi==1.0
 virtualenv==20.20.0
 wcwidth==0.2.6
 webencodings==0.5.1
