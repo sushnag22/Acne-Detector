@@ -2,9 +2,11 @@ from flask import Flask, render_template, url_for, request, send_file
 import io, json
 from PIL import Image
 from roboflow import Roboflow
+
+# acne model
 rf = Roboflow(api_key="490txGCcR4mjEOmyVx97")
 project = rf.workspace().project("acne-detection-v2")
-model = project.version(1).model
+model = project.version(2).model
 
 # face model
 rf2 = Roboflow(api_key="490txGCcR4mjEOmyVx97")
@@ -23,7 +25,6 @@ resultInJsonRc = None
 ffCount_forehead, ffCount_nose, ffCount_chin = {}, {}, {}
 ffCount, lcCount, rcCount = {}, {}, {}
 res = 'None'
-
 
 def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu, npa, nc, cn, cpu, cpa, cc, ln, lpu, lpa, lc, rn, rpu, rpa, rc):
     from fpdf import FPDF
@@ -77,15 +78,12 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(10, 10, str('              Local Score: {}'.format(rtemp)), ln=1)
 
-
     pdf.image('static/images/result_of_upload_front_face.jpg', x=15, y=210,w=50)
     pdf.image('static/images/result_of_upload_left_cheek.jpg', x=75, y=210,w=50)
     pdf.image('static/images/result_of_upload_right_cheek.jpg', x=135, y=210,w=50)
 
-
     # Save the PDF document
     pdf.output('acne_report.pdf', 'F')
-
 
 @app.route('/upload_front_face', methods=['POST'])
 def upload_front_face():
@@ -103,6 +101,7 @@ def upload_front_face():
     # parsed json data
     parsed_data = resultInJsonFf
     global ffCount
+    fx0,fx1, fy0, fy1, nx0,nx1, ny0, ny1, cx0,cx1, cy0, cy1 = 0,0,0,0,0,0,0,0,0,0,0,0 
     fconfi, nconfi, cconfi = 0, 0, 0
     # loop through each object in the "predictions" list
     for prediction in data['predictions']:
@@ -217,75 +216,116 @@ def upload_right_cheek():
     # Final severity analysis based on GAGS
     totalScore = 0
     ftemp, ltemp, rtemp = 0, 0, 0
+
     for pred_class, count in ffCount_forehead.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
-            ftemp += 8
-            break
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
-            ftemp += 6
-            break
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
-            ftemp += 4
-            break
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
-            ftemp += 2
-            break
+        if ('nodule' in ffCount_forehead and ffCount_forehead['nodule'] >= 1) or ('nodules' in ffCount_forehead and ffCount_forehead['nodules'] >= 1) or ('0' in ffCount_forehead and ffCount_forehead['0'] >= 1) :
+            if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+                ftemp += 8
+                break
+            continue
+        elif ('pustule' in ffCount_forehead and ffCount_forehead['pustule'] >= 1) or ('pustules' in ffCount_forehead and ffCount_forehead['pustules'] >= 1) or ('2' in ffCount_forehead and ffCount_forehead['2'] >= 1) :
+            if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+                ftemp += 6
+                break
+            continue
+        elif ('papule' in ffCount_forehead and ffCount_forehead['papule'] >= 1) or ('papules' in ffCount_forehead and ffCount_forehead['papules'] >= 1) or ('1' in ffCount_forehead and ffCount_forehead['1'] >= 1) :
+            if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+                ftemp += 4
+                break
+            continue
+        elif ('comedone' in ffCount_forehead and ffCount_forehead['comedone'] >= 1) or ('comedones' in ffCount_forehead and ffCount_forehead['comedones'] >= 1) or ('3' in ffCount_forehead and ffCount_forehead['3'] >= 1) :
+            if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+                ftemp += 2
+                break
+            continue
 
     for pred_class, count in ffCount_nose.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
-            ftemp += 4
-            break
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
-            ftemp += 3
-            break
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
-            ftemp += 2
-            break
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
-            ftemp += 1
-            break
+        if ('nodule' in ffCount_nose and ffCount_nose['nodule'] >= 1) or ('nodules' in ffCount_nose and ffCount_nose['nodules'] >= 1) or ('0' in ffCount_nose and ffCount_nose['0'] >= 1) :
+            if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+                ftemp += 4
+                break
+            continue
+        elif ('pustule' in ffCount_nose and ffCount_nose['pustule'] >= 1) or ('pustules' in ffCount_nose and ffCount_nose['pustules'] >= 1) or ('2' in ffCount_nose and ffCount_nose['2'] >= 1) :
+            if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+                ftemp += 3
+                break
+            continue
+        elif ('papule' in ffCount_nose and ffCount_nose['papule'] >= 1) or ('papules' in ffCount_nose and ffCount_nose['papules'] >= 1) or ('1' in ffCount_nose and ffCount_nose['1'] >= 1) :
+            if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+                ftemp += 2
+                break
+            continue
+        elif ('comedone' in ffCount_nose and ffCount_nose['comedone'] >= 1) or ('comedones' in ffCount_nose and ffCount_nose['comedones'] >= 1) or ('3' in ffCount_nose and ffCount_nose['3'] >= 1) :
+            if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+                ftemp += 1
+                break
+            continue
 
     for pred_class, count in ffCount_chin.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
-            ftemp += 4
-            break
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
-            ftemp += 3
-            break
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
-            ftemp += 2
-            break
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
-            ftemp += 1
-            break
+        if ('nodule' in ffCount_chin and ffCount_chin['nodule'] >= 1) or ('nodules' in ffCount_chin and ffCount_chin['nodules'] >= 1) or ('0' in ffCount_chin and ffCount_chin['0'] >= 1) :
+            if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+                ftemp += 4
+                break
+            continue
+        elif ('pustule' in ffCount_chin and ffCount_chin['pustule'] >= 1) or ('pustules' in ffCount_chin and ffCount_chin['pustules'] >= 1) or ('2' in ffCount_chin and ffCount_chin['2'] >= 1) :
+            if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+                ftemp += 3
+                break
+            continue
+        elif ('papule' in ffCount_chin and ffCount_chin['papule'] >= 1) or ('papules' in ffCount_chin and ffCount_chin['papules'] >= 1) or ('1' in ffCount_chin and ffCount_chin['1'] >= 1) :
+            if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+                ftemp += 2
+                break
+            continue
+        elif ('comedone' in ffCount_chin and ffCount_chin['comedone'] >= 1) or ('comedones' in ffCount_chin and ffCount_chin['comedones'] >= 1) or ('3' in ffCount_chin and ffCount_chin['3'] >= 1) :
+            if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+                ftemp += 1
+                break
+            continue
         
     for pred_class, count in lcCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
-            ltemp += 8
-            break
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
-            ltemp += 6
-            break
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
-            ltemp += 4
-            break
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
-            ltemp += 2
-            break
+        if ('nodule' in lcCount and lcCount['nodule'] >= 1) or ('nodules' in lcCount and lcCount['nodules'] >= 1) or ('0' in lcCount and lcCount['0'] >= 1) :
+            if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+                ltemp += 8
+                break
+            continue
+        elif ('pustule' in lcCount and lcCount['pustule'] >= 1) or ('pustules' in lcCount and lcCount['pustules'] >= 1) or ('2' in lcCount and lcCount['2'] >= 1) :
+            if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+                ltemp += 6
+                break
+            continue
+        elif ('papule' in lcCount and lcCount['papule'] >= 1) or ('papules' in lcCount and lcCount['papules'] >= 1) or ('1' in lcCount and lcCount['1'] >= 1) :
+            if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+                ltemp += 4
+                break
+            continue
+        elif ('comedone' in lcCount and lcCount['comedone'] >= 1) or ('comedones' in lcCount and lcCount['comedones'] >= 1) or ('3' in lcCount and lcCount['3'] >= 1) :
+            if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+                ltemp += 2
+                break
+            continue
 
     for pred_class, count in rcCount.items():
-        if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
-            rtemp += 8
-            break
-        if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
-            rtemp += 6
-            break
-        if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
-            rtemp += 4
-            break
-        if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
-            rtemp += 2
-            break
+        if ('nodule' in rcCount and rcCount['nodule'] >= 1) or ('nodules' in rcCount and rcCount['nodules'] >= 1) or ('0' in rcCount and rcCount['0'] >= 1) :
+            if (pred_class == "nodule" or pred_class == "nodules" or pred_class == '0') and count >= 1:
+                rtemp += 8
+                break
+            continue
+        elif ('pustule' in rcCount and rcCount['pustule'] >= 1) or ('pustules' in rcCount and rcCount['pustules'] >= 1) or ('2' in rcCount and rcCount['2'] >= 1) :
+            if (pred_class == "pustule" or pred_class == "pustules" or pred_class == '2') and count >= 1:
+                rtemp += 6
+                break
+            continue
+        elif ('papule' in rcCount and rcCount['papule'] >= 1) or ('papules' in rcCount and rcCount['papules'] >= 1) or ('1' in rcCount and rcCount['1'] >= 1) :
+            if (pred_class == "papule" or pred_class == "papules" or pred_class == '1') and count >= 1:
+                rtemp += 4
+                break
+            continue
+        elif ('comedone' in rcCount and rcCount['comedone'] >= 1) or ('comedones' in rcCount and rcCount['comedones'] >= 1) or ('3' in rcCount and rcCount['3'] >= 1) :
+            if (pred_class == "comedone" or pred_class == "comedones" or pred_class == '3') and count >= 1:
+                rtemp += 2
+                break
+            continue
     
     totalScore = ftemp+ltemp+rtemp
     if totalScore >= 1 and totalScore <= 18:
@@ -328,7 +368,7 @@ def upload_right_cheek():
 
     generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu, npa, nc, cn, cpu, cpa, cc, ln, lpu, lpa, lc, rn, rpu, rpa, rc)
     css_file = url_for('static', filename='css/style.css')
-    return render_template('result.html', css_file=css_file, res = res, globalScore=totalScore, lsff=ftemp, lslc=ltemp, lsrc=rtemp, fn=fn, fpu=fpu, fpa=fpa, fc=fc, ln=ln, lpu=lpu, lpa=lpa, lc=lc, rn=rn, rpu=rpu, rpa=rpa, rc=rc)
+    return render_template('result.html', css_file=css_file, res = res, globalScore=totalScore, lsff=ftemp, lslc=ltemp, lsrc=rtemp, fn=fn+nn+cn, fpu=fpu+npu+cpu, fpa=fpa+npa+cpa, fc=fc+nc+cc, ln=ln, lpu=lpu, lpa=lpa, lc=lc, rn=rn, rpu=rpu, rpa=rpa, rc=rc)
 
 @app.route('/')
 def index():
