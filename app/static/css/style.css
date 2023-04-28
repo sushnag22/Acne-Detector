@@ -3,6 +3,7 @@
 }
 
 body {
+  overflow: hidden;
   background-image: linear-gradient(to right top, #0b2452, #111f4f, #161a4b, #1a1547, #1e0f43, #171648, #0e1c4d, #002151, #002f58, #003b56, #004550, #084e49);
   background-repeat: no-repeat;
   background-size: cover;
