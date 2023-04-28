@@ -9,5 +9,9 @@ termsCheckbox.addEventListener("change", function () {
   }
 });
 
+function uploadStarted() {
+  window.androidInterface.showToast("Uploading image...")
+}
+
 document.getElementById("currentYear").innerHTML = new Date().getFullYear();
 
