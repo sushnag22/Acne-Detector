@@ -3,12 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- mobile compatible -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- disable mobile zoom begin -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+    <style>
+      @media only screen and (max-width: 450px) {
+        meta[name="viewport"] {
+          max-zoom: 1;
+          min-zoom: 1;
+        }
+      }
+    </style>
+    <!-- disable mobile screen end -->
     <title>AcneGrade</title>
     <!-- External stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ css_file }}" />
@@ -64,6 +78,71 @@
     </nav>
     <!-- Navbar end -->
 
+    <!-- mobile app logo -->
+    <div id="app-logo" style="position: absolute; top: 1.5%; left: 1%">
+      <a
+        class="navbar-brand"
+        id="navbar-brand"
+        href="#"
+        style="text-decoration: none; font-size: 1.4em"
+        ><span style="color: #39b0e0">Acne</span
+        ><span style="color: #ed56de">Grade</span></a
+      >
+    </div>
+    <div
+      id="app-logo1"
+      style="position: absolute; top: 0.5%; left: 80%; right: 0%"
+    >
+      <img
+        style="display: inline"
+        src="static/fav-icon/jss_maha.png"
+        alt="jss mv"
+        width="65%"
+        height="65%"
+      />
+    </div>
+
+    <!-- Intro begin-->
+    <div class="intro center">
+      <h1
+        style="
+          font-weight: 400;
+          padding: 2vh;
+          margin-top: 0.2vh;
+          margin-bottom: 0.2vh;
+          text-align: center;
+        "
+      >
+        Acne Grading and Severity Analysis
+      </h1>
+    </div>
+    <div>
+      <div class="container-md flow" style="text-align: center">
+        <p id="data-flow" style="text-align: center">
+          <span style="color: #39b0e0">Push Image</span>
+          <span style="color: #ed56de">&#8594;</span>
+          <span style="color: #39b0e0">Pull Result</span>
+        </p>
+      </div>
+    </div>
+    <!-- Intro ends -->
+
+    <!-- Status bar -->
+    <div style="display: block; text-align: center">
+      <div class="tick-circle21">
+        <div style="font-size: 3vh; font-weight: 600; color: green">✔</div>
+      </div>
+      <div style="display: inline; color: white; font-size: 5vh">&#8594;</div>
+      <div class="tick-circle22">
+        <div style="font-size: 3vh; font-weight: 600; color: green">✔</div>
+      </div>
+      <div style="display: inline; color: white; font-size: 5vh">&#8594;</div>
+      <div class="tick-circle23">
+        <div style="font-size: 3vh; font-weight: 600; color: yellow">3</div>
+      </div>
+    </div>
+    <!-- status bar ends -->
+
     <!-- form begin-->
     <div class="container-md form" id="form">
       <div class="row">
@@ -116,7 +195,59 @@
     </div>
     <!-- form end -->
 
-    <div class="ftr-space"></div>
+    <!-- Severity Scale begin-->
+    <div class="scale">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div
+              class="row"
+              style="
+                background-color: rgba(130, 220, 120, 0.3);
+                padding: 2vh;
+                text-align: center;
+              "
+            >
+              None
+            </div>
+            <div
+              class="row"
+              style="
+                background-color: rgba(192, 220, 120, 0.3);
+                padding: 2vh;
+                text-align: center;
+              "
+            >
+              Mild
+            </div>
+            <div
+              class="row"
+              style="
+                background-color: rgba(220, 158, 120, 0.3);
+                padding: 2vh;
+                text-align: center;
+              "
+            >
+              Moderate
+            </div>
+            <div
+              class="row"
+              style="
+                background-color: rgba(220, 120, 120, 0.3);
+                padding: 2vh;
+                text-align: center;
+              "
+            >
+              Severe
+            </div>
+          </div>
+          <div class="col" id="sev-scale">Severity Scale</div>
+        </div>
+      </div>
+    </div>
+    <!-- Severity Scale end-->
+
+    <!-- <div class="ftr-space"></div> -->
 
     <!-- footer begin -->
     <footer>

@@ -3,12 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- mobile compatible -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- disable mobile zoom begin -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+    <style>
+      @media only screen and (max-width: 450px) {
+        meta[name="viewport"] {
+          max-zoom: 1;
+          min-zoom: 1;
+        }
+      }
+    </style>
+    <!-- disable mobile screen end -->
+
     <title>AcneGrade</title>
     <!-- External stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ css_file }}" />
@@ -73,14 +89,38 @@
     </nav>
     <!-- Navbar end -->
 
-    <!-- Intro -->
+    <!-- mobile app logo -->
+    <div id="app-logo" style="position: absolute; top: 1.5%; left: 1%">
+      <a
+        class="navbar-brand"
+        id="navbar-brand"
+        href="#"
+        style="text-decoration: none; font-size: 1.4em"
+        ><span style="color: #39b0e0">Acne</span
+        ><span style="color: #ed56de">Grade</span></a
+      >
+    </div>
+    <div
+      id="app-logo1"
+      style="position: absolute; top: 0.5%; left: 80%; right: 0%"
+    >
+      <img
+        style="display: inline"
+        src="static/fav-icon/jss_maha.png"
+        alt="jss mv"
+        width="65%"
+        height="65%"
+      />
+    </div>
+
+    <!-- Intro begin-->
     <div class="intro center">
       <h1
         style="
           font-weight: 400;
           padding: 2vh;
-          margin-top: 8vh;
-          margin-bottom: 4vh;
+          margin-top: 5vh;
+          margin-bottom: 1vh;
           text-align: center;
         "
       >
@@ -88,22 +128,27 @@
       </h1>
     </div>
     <div>
-      <div class="container-md flow" style="text-align: left">
-        <p>
-          <span style="color: #39b0e0">High Resolution Image</span> &#8594;
-          <span style="color: #ed56de">Upload</span> &#8594;
-          <span style="color: #39b0e0">Generate Results</span>
+      <div class="container-md flow" style="text-align: center">
+        <p id="data-flow" style="text-align: center">
+          <span style="color: #39b0e0">Push Image</span>
+          <span style="color: #ed56de">&#8594;</span>
+          <span style="color: #39b0e0">Pull Result</span>
         </p>
         <br />
         <div id="btn-get-started" style="text-align: center">
-          <a href="#form"
-            ><button type="button" class="btn btn-primary">
-              Get Started
+          <a href="/instructions"
+            ><button
+              type="button"
+              class="btn btn-primary"
+              style="font-weight: 450"
+            >
+              Instructions
             </button></a
           >
         </div>
       </div>
     </div>
+    <!-- Intro ends -->
 
     <!-- Grading Methodology -->
     <div class="grading-methodology" id="grading-methodology">
@@ -138,7 +183,6 @@
             action="/upload_front_face"
             method="POST"
             enctype="multipart/form-data"
-            onsubmit="uploadStarted()"
           >
             <div class="mb-3">
               <label for="front-face" class="form-label"
@@ -172,7 +216,7 @@
               class="btn btn-primary"
               disabled
             >
-              Submit
+              Next
             </button>
           </form>
         </div>

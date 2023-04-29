@@ -3,12 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- mobile compatible -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- disable mobile zoom begin -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+    <style>
+      @media only screen and (max-width: 450px) {
+        meta[name="viewport"] {
+          max-zoom: 1;
+          min-zoom: 1;
+        }
+      }
+    </style>
+    <!-- disable mobile screen end -->
     <title>AcneGrade</title>
     <!-- External stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ css_file }}" />
@@ -64,56 +78,31 @@
     </nav>
     <!-- Navbar end -->
 
+    <!-- logo for mobile view -->
+    <div id="app-logo" style="position: absolute; top: 1.5%; left: 1%">
+      <a
+        class="navbar-brand"
+        id="navbar-brand"
+        href="#"
+        style="text-decoration: none; font-size: 1.4em"
+        ><span style="color: #39b0e0">Acne</span
+        ><span style="color: #ed56de">Grade</span></a
+      >
+    </div>
+
     <div class="center ins-followed">
-      <h1 style="font-weight: 100; text-align: center">
-        Instructions to be followed for better results.
-      </h1>
+      <h1 style="font-weight: 400; text-align: center">Instructions</h1>
     </div>
     <div class="container center">
       <div class="instruction-list">
         <ol>
-          <li class="li-odd">
-            Use a high-resolution smartphone camera: Use an iOS or android
-            smartphone camera with higher resolution to capture the images. This
-            will ensure that the image quality is good and the details are
-            clear.
-          </li>
+          <li class="li-odd">Use a high-resolution smartphone camera</li>
+          <li class="li-even">Maintain a distance of 15cm from the camera</li>
+          <li class="li-odd">Use standard light settings</li>
+          <li class="li-even">Capture frontal and lateral views</li>
+          <li class="li-odd">Upload the images to the app</li>
           <li class="li-even">
-            Maintain a distance of 15cm from the camera: While capturing the
-            images, make sure to maintain a distance of approximately 15cm
-            between the camera and the face. This will help in capturing the
-            image without any distortions or blurs.
-          </li>
-          <li class="li-odd">
-            Use standard light settings: It is recommended to capture the images
-            with standard light settings. This will ensure that the images are
-            captured uniformly and the results are accurate.
-          </li>
-          <li class="li-even">
-            Check lighting conditions and distance during image capturing: The
-            mobile application used for capturing images should check the
-            lighting conditions and the distance between the user's face and the
-            smartphone camera. This will help in capturing the images with the
-            correct lighting conditions and distance.
-          </li>
-          <li class="li-odd">
-            Capture frontal and lateral views: Capture three images of the face,
-            including frontal, right lateral, and left lateral views. Make sure
-            to capture lesions on the forehead, nose, chin, and cheeks, as per
-            the instructions given.
-          </li>
-          <li class="li-even">
-            Upload the images to the web application: Once you have captured the
-            images, upload them to the acnegrade web application. Make sure to
-            upload high-quality images with clear details to obtain better
-            results.
-          </li>
-          <li class="li-odd">
-            Results are based on Global Acne Grading System (GAGS): Keep in mind
-            that the results obtained will be based on the Global Acne Grading
-            System (GAGS). This system assigns a grade to the acne based on the
-            severity of the condition, so make sure to provide accurate and
-            clear images to get the most accurate results.
+            Results are based on Global Acne Grading System (GAGS)
           </li>
         </ol>
       </div>
