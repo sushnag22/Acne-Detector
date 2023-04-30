@@ -143,6 +143,24 @@
     </div>
     <!-- status bar ends -->
 
+    <!-- Trigger when Improper image sent -->
+    {% if improper_image_rc==1 %}
+    <p
+      style="
+        font-size: 1.6vh;
+        font-weight: 400;
+        color: red;
+        font-style: italic;
+        text-align: center;
+        padding: 0px;
+        margin: 0px;
+      "
+    >
+      <span style="font-weight: bolder; color: red">*</span>
+      Right Cheek image does not abide by the instructions.
+    </p>
+    {% endif %}
+
     <!-- form begin-->
     <div class="container-md form" id="form">
       <div class="row">
