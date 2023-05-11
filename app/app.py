@@ -26,6 +26,8 @@ ffCount_forehead, ffCount_nose, ffCount_chin = {}, {}, {}
 ffCount, lcCount, rcCount = {}, {}, {}
 res = 'None'
 
+patientName = ''
+
 def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu, npa, nc, cn, cpu, cpa, cc, ln, lpu, lpa, lc, rn, rpu, rpa, rc):
     from fpdf import FPDF
 
@@ -45,6 +47,7 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     pdf.set_font('Arial', '', 12)
     pdf.cell(10,10, str('Date:'), ln=1)
     pdf.cell(10,10, str('Patient Name:'), ln=1)
+    pdf.cell(10,10, str('Patient Registration Number: {0}'.format(patientRegNo)), ln=1)
     pdf.cell(10,10, str('Gender:                        Age:'), ln=1)
     pdf.ln()
     pdf.set_font('Arial', 'B', 14)
@@ -91,6 +94,9 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
 @app.route('/upload_front_face', methods=['POST'])
 def upload_front_face():
     image_file = request.files['image']
+    global patientRegNo
+    patientRegNo = request.form['patientregno']
+    print(patientRegNo)
     image_data = image_file.read()
     image = Image.open(io.BytesIO(image_data))
     image.thumbnail(max_size)

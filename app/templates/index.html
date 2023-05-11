@@ -173,7 +173,7 @@
     </div>
 
     <!-- form begin-->
-    <div class="container-md form" id="form">
+    <div class="container-md form" id="form" style="margin-bottom: 2px">
       <div class="row">
         <div class="col" id="face-img" style="text-align: center">
           <img src="static/face_image/front_face_acne.png" alt="front face" />
@@ -184,6 +184,18 @@
             method="POST"
             enctype="multipart/form-data"
           >
+            <div class="mb-3">
+              <label for="patientregno" class="form-label"
+              >Patient Registration Number</label
+              >
+              <input
+                type="text"
+                name="patientregno"
+                class="form-control"
+                id="patientregno"
+                placeholder="Enter Patient Registration Number"
+              />
+            </div>
             <div class="mb-3">
               <label for="front-face" class="form-label"
                 >Frontal Face Image</label
@@ -225,7 +237,18 @@
     <!-- form end -->
 
     <!-- Severity Scale begin-->
-    <div class="scale">
+    <div
+      class="scale"
+      style="
+        margin-left: 0.5vh;
+        margin-right: 0.5vh;
+        margin-bottom: 0.2vh;
+        margin-top: 0vh;
+        padding-top: 0vh;
+        padding-left: 0.2vh;
+        padding-bottom: 0vh;
+      "
+    >
       <div class="container">
         <div class="row">
           <div class="col">
