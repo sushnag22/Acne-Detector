@@ -171,20 +171,6 @@ table {
   font-size: small;
 }
 
-body {
-  overflow: hidden;
-}
-
-/* to hide the scrollbar in mobile view */
-::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 0px;
-  background: transparent;
-  display: none;
-}
-
-/* ::-webkit-scrollbar { display: none; } */
-
 #grading-methodology {
   display: none;
 }
