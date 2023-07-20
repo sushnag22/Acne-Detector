@@ -30,6 +30,9 @@ patientName = ''
 
 def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu, npa, nc, cn, cpu, cpa, cc, ln, lpu, lpa, lc, rn, rpu, rpa, rc):
     from fpdf import FPDF
+    from datetime import datetime
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
     # Define the PDF document
     pdf = FPDF(format='A4')
@@ -45,10 +48,11 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
 
     pdf.set_text_color(0, 0, 0)
     pdf.set_font('Arial', '', 12)
-    pdf.cell(10,10, str('Date:'), ln=1)
-    pdf.cell(10,10, str('Patient Name:'), ln=1)
+    pdf.cell(10,10, str('Date & Time: {}').format(dt_string), ln=1)
     pdf.cell(10,10, str('Patient Registration Number: {0}'.format(patientRegNo)), ln=1)
-    pdf.cell(10,10, str('Gender:                        Age:'), ln=1)
+    pdf.cell(10,10, str('Patient Name: {0}'.format(patientName)), ln=1)
+    pdf.cell(10,10, str('Patient Age: {0}'.format(patientAge)), ln=1)
+    pdf.cell(10,10, str('Patient Sex: {0}'.format(patientSex)), ln=1)
     pdf.ln()
     pdf.set_font('Arial', 'B', 14)
     pdf.cell(0, 10, str('Result: ' + res) , 0, 1, 'C')
@@ -97,6 +101,15 @@ def upload_front_face():
     global patientRegNo
     patientRegNo = request.form['patientregno']
     print(patientRegNo)
+    global patientName
+    patientName = request.form['patientname']
+    print(patientName)
+    global patientAge
+    patientAge = request.form['patientage']
+    print(patientAge)
+    global patientSex
+    patientSex = request.form['patientsex']
+    print(patientSex)
     image_data = image_file.read()
     image = Image.open(io.BytesIO(image_data))
     image.thumbnail(max_size)
