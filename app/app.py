@@ -193,47 +193,20 @@ def upload_left_cheek():
     resultInJsonLc = model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
     model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_left_cheek.jpg')
-    data = model2.predict("static/images/upload_left_cheek.jpg", confidence=40, overlap=30).json()
+    # data = model2.predict("static/images/upload_left_cheek.jpg", confidence=40, overlap=30).json()
     parsed_data = resultInJsonLc
     global lcCount
-	# validation it is left lateral image
-    lcc, rcc = 0, 0
-    lcwidth, lcheight, rcwidth, rcheight = 0, 0, 0, 0
-    for prediction in data['predictions']:
-        if prediction['class'] == 'Left-cheek' and prediction['confidence'] > lcc:
-            lcc = prediction['confidence']
-            lcwidth, lcheight = prediction['width'], prediction['height']
-        if prediction['class'] == 'Right-cheek' and prediction['confidence'] > rcc:
-            rcc = prediction['confidence']
-            rcwidth, rcheight = prediction['width'], prediction['height']
-            
-    if (int(lcwidth+lcheight)) <= 0:
-        css_file = url_for('static', filename='css/style.css')
-        return render_template('left_cheek.html', css_file=css_file, improper_image_lc = 1)
-
-    if (rcwidth > lcwidth and rcheight > lcheight) and rcc > lcc:
-        css_file = url_for('static', filename='css/style.css')
-        return render_template('left_cheek.html', css_file=css_file, improper_image_lc = 1)
-
-    lcx0, lcy0, lcx1, lcy1 = 0, 0, 0, 0
-    lcconfi = 0
-    for prediction in data['predictions']:
-        if prediction['class'] == 'Left-cheek' and prediction['confidence'] > lcconfi:
-            lcconfi = prediction['confidence']
-            # leftcheek_coordinates = (prediction['x'], prediction['y'], prediction['width'], prediction['height'])
-            lcx0 = prediction['x'] - prediction['width'] / 2
-            lcx1 = prediction['x'] + prediction['width'] / 2
-            lcy0 = prediction['y'] - prediction['height'] / 2
-            lcy1 = prediction['y'] + prediction['height'] / 2
-
-
+	# loop through each object in the "predictions" list
     for obj in parsed_data["predictions"]:
+        # get the class of the object
         obj_class = obj["class"]
-        if (lcx0 <= obj['x'] and lcy0 <= obj['y']) and (lcx1 >= obj['x'] and lcy1 >= obj['y']):
-            if obj_class in lcCount:
-                lcCount[obj_class] += 1
-            else:
-                lcCount[obj_class] = 1
+        # check if the class is already in the dictionary
+        if obj_class in lcCount:
+            # if it is, increment the count
+            lcCount[obj_class] += 1
+        else:
+            # if it isn't, set the count to 1
+            lcCount[obj_class] = 1
     css_file = url_for('static', filename='css/style.css')
     return render_template('right_cheek.html', css_file=css_file)
 
@@ -249,46 +222,20 @@ def upload_right_cheek():
     resultInJsonRc = model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
     model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_right_cheek.jpg')
-    datarc = model2.predict("static/images/upload_right_cheek.jpg", confidence=40, overlap=30).json()
+    # datarc = model2.predict("static/images/upload_right_cheek.jpg", confidence=40, overlap=30).json()
     parsed_data = resultInJsonRc
     global rcCount
-	# validation it is right lateral image
-    lcc, rcc = 0, 0
-    lcwidth, lcheight, rcwidth, rcheight = 0, 0, 0, 0
-    for prediction in datarc['predictions']:
-        if prediction['class'] == 'Right-cheek' and prediction['confidence'] > rcc:
-            rcc = prediction['confidence']
-            rcwidth, rcheight = prediction['width'], prediction['height']
-        if prediction['class'] == 'Left-cheek' and prediction['confidence'] > lcc:
-            lcc = prediction['confidence']
-            lcwidth, lcheight = prediction['width'], prediction['height']
-    
-    if (int(rcwidth+rcheight)) <= 0:
-        css_file = url_for('static', filename='css/style.css')
-        return render_template('right_cheek.html', css_file=css_file, improper_image_rc = 1)
-    
-    if ((lcwidth > rcwidth and lcheight > rcheight) and lcc > rcc):
-        css_file = url_for('static', filename='css/style.css')
-        return render_template('right_cheek.html', css_file=css_file, improper_image_rc = 1)
-
-    rcx0, rcy0, rcx1, rcy1 = 0, 0, 0, 0
-    rcconfi = 0
-    for prediction in datarc['predictions']:
-        if prediction['class'] == 'Right-cheek' and prediction['confidence'] > rcconfi:
-            rcconfi = prediction['confidence']
-            # rightcheek_coordinates = (prediction['x'], prediction['y'], prediction['width'], prediction['height'])
-            rcx0 = prediction['x'] - prediction['width'] / 2
-            rcx1 = prediction['x'] + prediction['width'] / 2
-            rcy0 = prediction['y'] - prediction['height'] / 2
-            rcy1 = prediction['y'] + prediction['height'] / 2
-
+	# loop through each object in the "predictions" list
     for obj in parsed_data["predictions"]:
+        # get the class of the object
         obj_class = obj["class"]
-        if (rcx0 <= obj['x'] and rcy0 <= obj['y']) and (rcx1 >= obj['x'] and rcy1 >= obj['y']):
-            if obj_class in rcCount:
-                rcCount[obj_class] += 1
-            else:
-                rcCount[obj_class] = 1
+        # check if the class is already in the dictionary
+        if obj_class in rcCount:
+            # if it is, increment the count
+            rcCount[obj_class] += 1
+        else:
+            # if it isn't, set the count to 1
+            rcCount[obj_class] = 1
     
     # Final severity analysis based on GAGS
     totalScore = 0
