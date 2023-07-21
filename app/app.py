@@ -85,31 +85,16 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(10, 10, str('              Local Score: {}'.format(rtemp)), ln=1)
 
-
     pdf.image('static/images/result_of_upload_front_face.jpg', x=15, y=210,w=50)
     pdf.image('static/images/result_of_upload_left_cheek.jpg', x=75, y=210,w=50)
     pdf.image('static/images/result_of_upload_right_cheek.jpg', x=135, y=210,w=50)
 
-
     # Save the PDF document
     pdf.output('acne_report.pdf', 'F')
-
 
 @app.route('/upload_front_face', methods=['POST'])
 def upload_front_face():
     image_file = request.files['image']
-    global patientRegNo
-    patientRegNo = request.form['patientregno']
-    print(patientRegNo)
-    global patientName
-    patientName = request.form['patientname']
-    print(patientName)
-    global patientAge
-    patientAge = request.form['patientage']
-    print(patientAge)
-    global patientSex
-    patientSex = request.form['patientsex']
-    print(patientSex)
     image_data = image_file.read()
     image = Image.open(io.BytesIO(image_data))
     image.thumbnail(max_size)
@@ -123,7 +108,7 @@ def upload_front_face():
     # parsed json data
     parsed_data = resultInJsonFf
     global ffCount
-    fx0,fx1, fy0, fy1, nx0,nx1, ny0, ny1, cx0,cx1, cy0, cy1 = 0,0,0,0,0,0,0,0,0,0,0,0
+    fx0,fx1, fy0, fy1, nx0,nx1, ny0, ny1, cx0,cx1, cy0, cy1 = 0,0,0,0,0,0,0,0,0,0,0,0 
     fconfi, nconfi, cconfi = 0, 0, 0
     # loop through each object in the "predictions" list
     for prediction in data['predictions']:
@@ -193,10 +178,9 @@ def upload_left_cheek():
     resultInJsonLc = model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
     model.predict('static/images/upload_left_cheek.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_left_cheek.jpg')
-    # data = model2.predict("static/images/upload_left_cheek.jpg", confidence=40, overlap=30).json()
     parsed_data = resultInJsonLc
     global lcCount
-	# loop through each object in the "predictions" list
+    # loop through each object in the "predictions" list
     for obj in parsed_data["predictions"]:
         # get the class of the object
         obj_class = obj["class"]
@@ -222,10 +206,9 @@ def upload_right_cheek():
     resultInJsonRc = model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).json()
     # visualize your prediction
     model.predict('static/images/upload_right_cheek.jpg', confidence=confidence, overlap=overlap).save('static/images/result_of_upload_right_cheek.jpg')
-    # datarc = model2.predict("static/images/upload_right_cheek.jpg", confidence=40, overlap=30).json()
     parsed_data = resultInJsonRc
     global rcCount
-	# loop through each object in the "predictions" list
+    # loop through each object in the "predictions" list
     for obj in parsed_data["predictions"]:
         # get the class of the object
         obj_class = obj["class"]
