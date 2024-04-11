@@ -35,7 +35,7 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
     # Define the PDF document
-    pdf = FPDF(format='A4')
+    pdf = FPDF(format='Letter')
 
     # Add a page
     pdf.add_page()
