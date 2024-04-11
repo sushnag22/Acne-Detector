@@ -47,7 +47,7 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     # Add a page
     pdf.add_page()
 
-    pdf.set_font('Arial', 'B', 16)
+    pdf.set_font('Arial', 'B', 14)
 
     pdf.set_fill_color(255, 255, 255)
     pdf.set_text_color(255, 0, 0)
@@ -60,14 +60,13 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     pdf.cell(10,10, str('Patient Name: {0}'.format(patientName)), ln=1)
     pdf.cell(10,10, str('Patient Age: {0}'.format(patientAge)), ln=1)
     pdf.cell(10,10, str('Patient Sex: {0}'.format(patientSex)), ln=1)
-    pdf.ln()
-    pdf.set_font('Arial', 'B', 14)
+    pdf.set_font('Arial', 'B', 13)
     pdf.cell(0, 10, str('Result: ' + res) , 0, 1, 'C')
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(0, 10, str('Global Score: {}'.format(totalScore)), 0, 1, 'C')
 
     pdf.set_text_color(0,0,0)
-    pdf.set_font('Arial', 'B', 14)
+    pdf.set_font('Arial', 'B', 13)
     pdf.cell(10, 10, str('Face Region'), ln=1)
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(10, 10, str('      Frontal Face'), ln=1)
@@ -91,6 +90,10 @@ def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu
     pdf.cell(10, 10, str('              nodule {0}, pustule {1}, papule {2}, comedone {3}'.format(rn, rpu, rpa, rc)), ln=1)
     pdf.set_font('Arial', 'B', 12)
     pdf.cell(10, 10, str('              Local Score: {}'.format(rtemp)), ln=1)
+
+    pdf.image('static/images/result_of_upload_front_face.jpg', x=15, y=210,w=50)
+    pdf.image('static/images/result_of_upload_left_cheek.jpg', x=75, y=210,w=50)
+    pdf.image('static/images/result_of_upload_right_cheek.jpg', x=135, y=210,w=50)
 
     # Save the PDF document
     pdf.output('acne_report.pdf', 'F')
