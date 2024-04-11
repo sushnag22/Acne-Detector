@@ -30,9 +30,16 @@ patientName = ''
 
 def generateReport(res, totalScore, ftemp, ltemp, rtemp,fn, fpu, fpa, fc,nn, npu, npa, nc, cn, cpu, cpa, cc, ln, lpu, lpa, lc, rn, rpu, rpa, rc):
     from fpdf import FPDF
-    from datetime import datetime
+    from datetime import datetime, timedelta
+
+    # Get the current time
     now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+    # Add 5 hours and 30 minutes to adjust to GMT+5:30
+    now_ist = now + timedelta(hours=5, minutes=30)
+
+    # Format the IST time string
+    dt_string = now_ist.strftime("%d/%m/%Y %H:%M:%S IST")
 
     # Define the PDF document
     pdf = FPDF(format='Letter')
