@@ -4,12 +4,12 @@ from PIL import Image
 from roboflow import Roboflow
 
 # acne model
-rf = Roboflow(api_key="490txGCcR4mjEOmyVx97")
-project = rf.workspace().project("acne-detection-v2")
-model = project.version(2).model
+rf = Roboflow(api_key="QLCz3UoEIgfO52X0zObK")
+project = rf.workspace().project("acne-vulgaris")
+model = project.version(3).model
 
 # face model
-rf2 = Roboflow(api_key="490txGCcR4mjEOmyVx97")
+rf2 = Roboflow(api_key="QLCz3UoEIgfO52X0zObK")
 project = rf2.workspace().project("facial-region-detection")
 model2 = project.version(1).model
 
