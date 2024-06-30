@@ -6,7 +6,7 @@ from roboflow import Roboflow
 # acne model
 rf = Roboflow(api_key="QLCz3UoEIgfO52X0zObK")
 project = rf.workspace().project("acne-vulgaris")
-model = project.version(3).model
+model = project.version(6).model
 
 # face model
 rf2 = Roboflow(api_key="QLCz3UoEIgfO52X0zObK")
