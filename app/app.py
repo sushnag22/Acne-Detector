@@ -10,7 +10,7 @@ model = project.version(3).model
 
 # face model
 rf2 = Roboflow(api_key="QLCz3UoEIgfO52X0zObK")
-project = rf2.workspace().project("facial-region-detection")
+project = rf2.workspace().project("facial-region-detection-dt8b3")
 model2 = project.version(1).model
 
 app = Flask(__name__)
