@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 # confidence and overlap
 max_size = (416, 416)
-confidence = 20
+confidence = 5
 overlap = 30
 resultInJsonFf = None
 resultInJsonLc = None
